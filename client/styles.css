@@ -1,0 +1,126 @@
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #fdf6f9;
+  color: #3a3a3a;
+}
+
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+  margin-bottom: 5px;
+  color: #6b4e71;
+}
+
+.subtitle {
+  color: #8a7f86;
+  margin-bottom: 30px;
+}
+
+section {
+  margin-bottom: 25px;
+}
+
+h2 {
+  color: #6b4e71;
+  font-size: 1.1rem;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: #8a7f86;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #e6dbe2;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #d6a6c1;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #8a7f86;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #d6a6c1;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #c78ab0;
+}
+
+/* History */
+.history {
+  margin-top: 40px;
+}
+
+.checkin-card {
+  background: #fff7fb;
+  border: 1px solid #f0dce8;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.checkin-card summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: #6b4e71;
+  outline: none;
+}
+
+.checkin-content {
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.good-day {
+  color: #9b5fa6;
+  background: #f3e8f5;
+  padding: 6px 10px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 10px;
+}

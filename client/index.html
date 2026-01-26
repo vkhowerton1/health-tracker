@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Health Check-In</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Daily Health Check-In</h1>
+    <p class="subtitle">
+      A gentle daily snapshot to notice patterns and understand what helps your body feel its best.
+    </p>
+
+    <form id="checkin-form">
+
+      <!-- Meals -->
+      <section>
+        <h2>Meals</h2>
+        <p class="helper-text">
+          Simple descriptions are perfect. This helps notice patterns over time — not perfection.
+        </p>
+
+        <label>
+          Breakfast
+          <input type="text" name="breakfast" placeholder="Ex: eggs & toast, smoothie, skipped" />
+        </label>
+
+        <label>
+          Lunch
+          <input type="text" name="lunch" placeholder="Ex: sandwich, salad, leftovers" />
+        </label>
+
+        <label>
+          Dinner
+          <input type="text" name="dinner" placeholder="Ex: pasta, chicken & rice, takeout" />
+        </label>
+      </section>
+
+      <!-- Snacking -->
+      <section>
+        <h2>Snacking</h2>
+        <p class="helper-text">
+          This can help highlight cravings and energy shifts.
+        </p>
+
+        <select name="snackType">
+          <option value="">Select one</option>
+          <option value="none">No snacking</option>
+          <option value="salty">Mostly salty</option>
+          <option value="sweet">Mostly sweet</option>
+          <option value="mix">A mix of both</option>
+        </select>
+      </section>
+
+      <!-- Water -->
+      <section>
+        <h2>Water Intake</h2>
+        <p class="helper-text">
+          A rough estimate is all that’s needed.
+        </p>
+
+        <select name="waterIntake">
+          <option value="">Select range (fl oz)</option>
+          <option value="0-24">0–24</option>
+          <option value="25-48">25–48</option>
+          <option value="49-72">49–72</option>
+          <option value="73+">73+</option>
+        </select>
+      </section>
+
+      <!-- Overall -->
+      <section>
+        <h2>Overall Day</h2>
+        <p class="helper-text">
+          How the day felt in your body overall — not how productive it was.
+        </p>
+
+        <div class="slider-labels">
+          <span>Very bad</span>
+          <span>Very good</span>
+        </div>
+        <input type="range" min="0" max="10" name="overallScore" />
+      </section>
+
+      <!-- Stress -->
+      <section>
+        <h2>Stress / Anxiety</h2>
+        <p class="helper-text">
+          Track intensity, regardless of the cause.
+        </p>
+
+        <div class="slider-labels">
+          <span>Very calm</span>
+          <span>Extremely overwhelmed</span>
+        </div>
+        <input type="range" min="0" max="10" name="stressLevel" />
+      </section>
+
+      <!-- Pain -->
+      <section>
+        <h2>Pain Level</h2>
+        <p class="helper-text">
+          Include tension, discomfort, or body pain.
+        </p>
+
+        <div class="slider-labels">
+          <span>No pain</span>
+          <span>Severe pain</span>
+        </div>
+        <input type="range" min="0" max="10" name="painLevel" />
+      </section>
+
+      <!-- Notes -->
+      <section>
+        <h2>Notes (optional)</h2>
+        <p class="helper-text">
+          Anything unusual, emotional, hormonal, or important.
+        </p>
+
+        <textarea
+          name="notes"
+          placeholder="Ex: poor sleep, stressful meeting, period started, felt calm all day"
+        ></textarea>
+      </section>
+
+      <button type="submit">Save Check-In</button>
+    </form>
+
+    <!-- History -->
+    <section class="history">
+      <h2>Previous Check-Ins</h2>
+      <p class="helper-text">
+        Tap a day to expand. This is meant for reflection, not judgment.
+      </p>
+      <div id="checkins"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
 const PORT = 3001;
@@ -7,40 +7,31 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-// Temporary in-memory storage
-let symptoms = [];
+let checkins = [];
 
-// Test route
-app.get('/', (req, res) => {
-  res.send('Health Tracker API is running');
+// Health check
+app.get("/", (req, res) => {
+  res.send("Health Tracker API is running");
 });
 
-// Save a daily check-in
-app.post('/api/checkins', (req, res) => {
-  const checkin = req.body;
-
-  const isGoodDay =
-    Number(checkin.overallScore) >= 7 &&
-    Number(checkin.stressLevel) <= 4 &&
-    Number(checkin.painLevel) <= 3;
-
-  const entryWithDate = {
-    ...checkin,
-    isGoodDay,
+// Save check-in
+app.post("/api/symptoms", (req, res) => {
+  const entry = {
+    ...req.body,
     date: new Date().toISOString(),
   };
 
-  symptoms.push(entryWithDate);
+  checkins.push(entry);
 
   res.status(201).json({
-    message: 'Check-in saved',
-    data: entryWithDate,
+    message: "Check-in saved",
+    data: entry,
   });
 });
 
 // Get all check-ins
-app.get('/api/checkins', (req, res) => {
-  res.json(symptoms);
+app.get("/api/checkins", (req, res) => {
+  res.json(checkins);
 });
 
 app.listen(PORT, () => {

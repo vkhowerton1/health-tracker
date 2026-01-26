@@ -1,67 +1,8 @@
-const form = document.getElementById('checkin-form');
-const checkinsDiv = document.getElementById('checkins');
+const form = document.getElementById("checkin-form");
+const insightsDiv = document.getElementById("insights");
+const historyDiv = document.getElementById("history");
 
-async function loadCheckins() {
-  try {
-    const res = await fetch('http://localhost:3001/api/checkins');
-    const data = await res.json();
-
-    checkinsDiv.innerHTML = '';
-
-    if (data.length === 0) {
-      checkinsDiv.innerHTML = '<p>No check-ins yet.</p>';
-      return;
-    }
-
-    data
-      .slice()
-      .reverse()
-      .forEach(entry => {
-        const details = document.createElement('details');
-        details.className = 'checkin-card';
-
-        const summary = document.createElement('summary');
-        summary.innerHTML = `
-          ${new Date(entry.date).toLocaleDateString()}
-          ${entry.isGoodDay ? ' ✨' : ''}
-        `;
-
-        details.appendChild(summary);
-
-        const content = document.createElement('div');
-        content.className = 'checkin-content';
-
-        content.innerHTML = `
-          ${
-            entry.isGoodDay
-              ? '<p class="good-day">✨ Felt like a good day</p>'
-              : ''
-          }
-
-          <p><strong>Meals</strong></p>
-          <p>🍳 Breakfast: ${entry.breakfast || '—'}</p>
-          <p>🥗 Lunch: ${entry.lunch || '—'}</p>
-          <p>🍽 Dinner: ${entry.dinner || '—'}</p>
-
-          <p><strong>Snacking:</strong> ${entry.snackType || '—'}</p>
-          <p><strong>Water:</strong> ${entry.waterIntake || '—'} fl oz</p>
-
-          <p><strong>Overall:</strong> ${entry.overallScore}/10</p>
-          <p><strong>Stress:</strong> ${entry.stressLevel}/10</p>
-          <p><strong>Pain:</strong> ${entry.painLevel}/10</p>
-
-          <p><strong>Notes:</strong> ${entry.notes || '—'}</p>
-        `;
-
-        details.appendChild(content);
-        checkinsDiv.appendChild(details);
-      });
-  } catch (err) {
-    console.error('Failed to load check-ins', err);
-  }
-}
-
-form.addEventListener('submit', async (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = {
@@ -70,25 +11,86 @@ form.addEventListener('submit', async (e) => {
     dinner: form.dinner.value,
     snackType: form.snackType.value,
     waterIntake: form.waterIntake.value,
-    overallScore: form.overallScore.value,
-    stressLevel: form.stressLevel.value,
-    painLevel: form.painLevel.value,
-    notes: form.notes.value
+    overallScore: Number(form.overallScore.value),
+    stressLevel: Number(form.stressLevel.value),
+    painLevel: Number(form.painLevel.value),
+    notes: form.notes.value,
   };
 
-  try {
-    await fetch('http://localhost:3001/api/checkins', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
+  await fetch("http://localhost:3001/api/symptoms", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-    alert('Check-in saved 💛');
-    form.reset();
-    loadCheckins();
-  } catch {
-    alert('Something went wrong');
-  }
+  form.reset();
+  loadData();
 });
 
-loadCheckins();
+function formatDate(date) {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+async function loadData() {
+  const res = await fetch("http://localhost:3001/api/checkins");
+  const entries = await res.json();
+
+  renderInsights(entries);
+  renderHistory(entries);
+}
+
+function renderInsights(entries) {
+  insightsDiv.innerHTML = "";
+
+  if (entries.length < 3) {
+    insightsDiv.innerHTML =
+      "<p>Check back after a few days to see early patterns.</p>";
+    return;
+  }
+
+  const highStress = entries.filter(e => e.stressLevel >= 7);
+  const lowPain = entries.filter(e => e.painLevel <= 3);
+
+  if (highStress.length) {
+    insightsDiv.innerHTML += `
+      <div class="insight-card">
+        <strong>Stress & Habits</strong>
+        <p>Higher stress days often include more snacking or skipped meals.</p>
+        <small>Early pattern — observational only.</small>
+      </div>
+    `;
+  }
+
+  if (lowPain.length) {
+    insightsDiv.innerHTML += `
+      <div class="insight-card">
+        <strong>Lower Pain Days</strong>
+        <p>Lower pain days often align with hydration and consistent meals.</p>
+        <small>Early pattern — gentle observation.</small>
+      </div>
+    `;
+  }
+}
+
+function renderHistory(entries) {
+  historyDiv.innerHTML = "";
+
+  entries.slice().reverse().forEach(entry => {
+    const div = document.createElement("div");
+    div.className = "history-card";
+
+    div.innerHTML = `
+      <strong>${formatDate(entry.date)}</strong><br/>
+      🍽 ${entry.breakfast || "—"}, ${entry.lunch || "—"}, ${entry.dinner || "—"}<br/>
+      😌 Stress: ${entry.stressLevel}/10 • 💢 Pain: ${entry.painLevel}/10 • 💧 ${entry.waterIntake || "—"}
+    `;
+
+    historyDiv.appendChild(div);
+  });
+}
+
+loadData();
